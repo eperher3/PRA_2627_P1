@@ -25,19 +25,18 @@ private:
     }
 
 public:
-    
+   
     ListArray() {
         arr = new T[MINSIZE];
         max = MINSIZE;
         n = 0;
     }
-
     
-    ~ListArray() override {
+    ~ListArray() {
         delete[] arr;
     }
 
-   
+    
     T operator[](int pos) {
         if (pos < 0 || pos >= n) {
             throw std::out_of_range("Posición fuera de rango en operator[]");
@@ -51,7 +50,7 @@ public:
             throw std::out_of_range("Posición fuera de rango en insert()");
         }
         if (n >= max) {
-            resize(max * 2); 
+            resize(max * 2);
         }
         for (int i = n; i > pos; i--) {
             arr[i] = arr[i - 1];
@@ -65,7 +64,7 @@ public:
         insert(0, e);
     }
 
-    
+   
     void append(T e) override {
         insert(n, e);
     }
@@ -80,16 +79,11 @@ public:
             arr[i] = arr[i + 1];
         }
         n--;
-        
-        
-        if (n < max / 4 && max / 2 >= MINSIZE) {
-            resize(max / 2);
-        }
         return aux;
     }
 
     
-    T get(int pos) const override {
+    T get(int pos) override {
         if (pos < 0 || pos >= n) {
             throw std::out_of_range("Posición fuera de rango en get()");
         }
@@ -97,7 +91,7 @@ public:
     }
 
     
-    int search(T e) const override {
+    int search(T e) override {
         for (int i = 0; i < n; i++) {
             if (arr[i] == e) {
                 return i;
@@ -107,21 +101,21 @@ public:
     }
 
     
-    bool empty() const override {
+    bool empty() override {
         return n == 0;
     }
 
-   
-    int size() const override {
+    
+    int size() override {
         return n;
     }
 
     
-    friend std::ostream& operator<<(std::ostream &out, const ListArray<T> &list) {
+    friend std::ostream& operator<<(std::ostream &out, ListArray<T> &list) {
         out << "ListArray [";
-        for (int i = 0; i < list.n; i++) {
-            out << list.arr[i];
-            if (i < list.n - 1) out << ", ";
+        for (int i = 0; i < list.size(); i++) {
+            out << list.get(i);
+            if (i < list.size() - 1) out << ", ";
         }
         out << "]";
         return out;
